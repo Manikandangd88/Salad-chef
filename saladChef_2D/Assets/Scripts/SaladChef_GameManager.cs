@@ -121,8 +121,15 @@ public class SaladChef_GameManager : MonoBehaviour
                 if (playerCombo == customercombo)
                 {
                     int val = player.GetComponent<Player>().score + ScorePoints;
-                    //Debug.Log("The score is : " + val);
-                    player.GetComponent<Player>().UpdateScore(val);
+
+                    if (customer.transform.GetChild(1).GetComponent<CustomerScript>().timeRanout > PercentageForCollectables / 100)
+                    {
+                        player.GetComponent<Player>().UpdateScore(val);
+                        GameObject go = Instantiate(collectablesList[Random.Range(0, collectablesList.Count)]);
+                        go.transform.SetParent(CanvasObject);
+                        go.transform.localPosition = Vector3.zero;
+                    }
+                    
                     ResetTheCombosOfPlayerAndCustomer(player, customer, true);
                 }
                 else
@@ -145,9 +152,7 @@ public class SaladChef_GameManager : MonoBehaviour
         if(customer.transform.GetChild(1).GetComponent<CustomerScript>().timeRanout > PercentageForCollectables/100)
         {
             //Debug.LogError(" ******** Here is ur bonus ******** ");
-            GameObject go = Instantiate(collectablesList[Random.Range(0, collectablesList.Count)]);
-            go.transform.SetParent(CanvasObject);
-            go.transform.localPosition = Vector3.zero;
+            
         }
 
         player.GetComponent<Player>().ResetTheCombo(status);
