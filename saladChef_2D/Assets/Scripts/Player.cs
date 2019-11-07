@@ -12,11 +12,13 @@ public class Player : MonoBehaviour
 
     public int score = 0;
 
-    [SerializeField]
+    //[SerializeField]
     private float timeLeft = 20f;
     public float speed = 2f;
 
     public bool timeRanOut = false;
+    private bool isChopping = false;
+    [SerializeField]
     private bool canMove = true;
     private bool hitWithWall = false;            //flag to check if the player has touched the wall    
     private bool hitWithVegetables = false;      //flag to check if the player has touched the vegetables    
@@ -46,6 +48,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI ChoppedVegetables_Text = null;
     public TextMeshProUGUI ChopTableVegetable_Text = null;
 
+    public LayerMask LayerToIgnore;
+
     [SerializeField]
     private List<string> vegetableList = new List<string>();       //the collected vegetables name from the vegetable plate
     [SerializeField]
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour
     {
         r_Body = GetComponent<Rigidbody2D>();
         gamemanager = FindObjectOfType<SaladChef_GameManager>();
+        timeLeft = gamemanager.TimeLeft;
     }
 
 
@@ -67,17 +72,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw(horizontalInput) != 0 || Input.GetAxisRaw(verticalInput) != 0)
-        {
-            if (canMove)
-            {
-                Move();
-            }
-        }
-
         if (timeRanOut == false)
         {
             CountDownTimer();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (canMove)
+        {
+            Moving();
         }
     }
 
@@ -90,13 +95,27 @@ public class Player : MonoBehaviour
         transform.position += moveDir * speed * Time.deltaTime;
     }
 
+    private void Moving()
+    {
+        r_Body.MovePosition(new Vector2(transform.position.x + Input.GetAxisRaw(horizontalInput) * speed * Time.deltaTime,
+                                            transform.position.y + Input.GetAxisRaw(verticalInput) * speed * Time.deltaTime));
+
+        r_Body.velocity = r_Body.velocity.normalized;        
+    }
+
     #region TriggerEnter, TriggerStay, TriggerExit
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "time")
+        if(collision.tag == "time")
         {
             timeLeft += gamemanager.BonusTime;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //if(collision.collider.tag == "wall")
+        //    Debug.LogError("Colliding a wall");
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -118,10 +137,30 @@ public class Player : MonoBehaviour
         else if (collision.tag == "customer")
         {
             hitWithCustomer = true;
+            //gamemanager.CurrentCustomer = collision.gameObject;
+            //Debug.Log("we hit with customer");
         }
         else if (collision.tag == "trash")
         {
             hitWithTrashCan = true;
+        }
+        else if(collision.tag == "collect")
+        {
+            if(collision.GetComponent<CollectableScript>().CollectableName == "speed")
+            {
+
+            }
+            else if (collision.GetComponent<CollectableScript>().CollectableName == "time")
+            {
+                Destroy(collision.gameObject);
+                timeLeft += gamemanager.BonusTime;
+            }
+            else if (collision.GetComponent<CollectableScript>().CollectableName == "points")
+            {
+                Destroy(collision.gameObject);
+                score += gamemanager.BonusPoints;
+                ScoreText.text = score.ToString();
+            }
         }
 
         if (Input.GetKeyDown(interactKey))
@@ -132,7 +171,10 @@ public class Player : MonoBehaviour
             }
             else if (hitWithChopTable)
             {
-                ChopVegetables(collision.gameObject);
+                if (isChopping == false)
+                {
+                    ChopVegetables(collision.gameObject);
+                }
             }
             else if (hitWithCustomer)
             {
@@ -200,10 +242,12 @@ public class Player : MonoBehaviour
     /// This method is responsible for chopping the vegetables
     /// </summary>
     private void ChopVegetables(GameObject choptable)
-    {
+    {      
+
         if (vegetableList.Count > 0)
         {
             canMove = false;
+            isChopping = true;
             Remove_Vegetables_From_Player_Holding_VegetableList(choptable);
 
             if (canMove == false)
@@ -213,7 +257,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-
+            
         }
     }
 
@@ -222,11 +266,12 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     IEnumerator DelaytimeForChopping(GameObject choptable)
-    {
-        yield return new WaitForSeconds(2f);
+    {        
+        yield return new WaitForSeconds(2f);        
         ChoppedVegetables_Text.text += choptable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
         choptable.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
         canMove = true;
+        isChopping = false;
     }
     #endregion
 
@@ -237,7 +282,7 @@ public class Player : MonoBehaviour
     {
         string currentVegetable = string.Empty;
 
-        TextMeshProUGUI txtmesh = choptable.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI txtmesh = choptable.transform.GetChild(0).GetComponent<TextMeshProUGUI>();        
         currentVegetable = txtmesh.text = vegetableList[0];
         choppedVegetables.Add(currentVegetable);
         vegetableList.Remove(currentVegetable);
@@ -287,7 +332,7 @@ public class Player : MonoBehaviour
     /// <param name="val"></param>
     public void UpdateScore(int val)
     {
-        score = val;
+        score = val;        
         ScoreText.text = score.ToString();
     }
 
@@ -295,14 +340,14 @@ public class Player : MonoBehaviour
     /// Countdown timer of the player
     /// </summary>
     public void CountDownTimer()
-    {
+    {        
         timeLeft -= Time.deltaTime;
         TimeText.text = timeLeft.ToString("0");
 
-        if (timeLeft < 0)
+        if(timeLeft < 0)
         {
             timeRanOut = true;
-            //gamemanager.CheckIfGameOver();
+            gamemanager.CheckIfGameOver();
         }
     }
 
@@ -311,6 +356,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-
+        
     }
 }

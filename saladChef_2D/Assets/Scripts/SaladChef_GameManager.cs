@@ -4,43 +4,51 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-//using MiniJSON;
+using MiniJSON;
 using System.IO;
 using System.Linq;
 
 public class SaladChef_GameManager : MonoBehaviour
-{
+{    
     public int ScorePoints = 1;
+    public int BonusPoints = 2;
 
     public float TimeLeft = 0;
-    public float BonusTime = 5f;
+    public float BonusTime = 10f;    
+    public float PercentageForCollectables;
 
     public bool gameOver = false;
 
-    public Text PlayerA_Timer;
+    public Text PlayerA_Timer;  
     public Text PlayerB_Timer;
     public Text ResultText;
 
+    public GameObject speedcollectable;
+    public GameObject BonusTimeCollectable;
+    public GameObject BonusScoreCollectable;
     public GameObject EndScreen;
     public GameObject HighScoreUI;
     public GameObject ScoreUI;
 
-    public Transform CustomerTable;
+    [SerializeField]
+    private Transform CanvasObject;    
     public Transform ScrollRectContentParent;
 
     public List<string> VegetableList = new List<string>();
 
     private Player[] players;
-
+    
     public List<Transform> SeatPositions = new List<Transform>();
     public List<Transform> tempTransList;
+
+    public List<GameObject> collectablesList = new List<GameObject>();
 
     [SerializeField]
     private List<int> tempIntList = new List<int>();
     [SerializeField]
     private List<Highscore> highscoreList = new List<Highscore>();
-    private List<KeyValuePair<string, object>> kvpList;
-
+    private List<KeyValuePair<string, object>> kvpList;   
+    
     public delegate void DestroyCustomers();
     public event DestroyCustomers KillCustomers;
 
@@ -53,13 +61,13 @@ public class SaladChef_GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //LoadTheHighScoresOnGameStart();
+        LoadTheHighScoresOnGameStart();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     /// <summary>
@@ -70,11 +78,11 @@ public class SaladChef_GameManager : MonoBehaviour
     {
         if (tempTransList.Count > 0)
         {
-            int randomNo = Random.Range(0, tempTransList.Count);
-            return tempTransList[randomNo];
+            int randomNo = Random.Range(0, tempTransList.Count);            
+            return tempTransList[randomNo]; 
         }
 
-        return null;
+        return null;        
     }
 
     /// <summary>
@@ -83,7 +91,7 @@ public class SaladChef_GameManager : MonoBehaviour
     /// </summary>
     /// <param name="trans"></param>
     public void RemoveReservedSeatFromList(Transform trans)
-    {
+    {        
         tempTransList.Remove(trans);
     }
 
@@ -103,19 +111,24 @@ public class SaladChef_GameManager : MonoBehaviour
     /// <param name="customer"></param>
     public void CheckingTheDeliveredSaladCombo(GameObject player, GameObject customer)
     {
-        string playerCombo = player.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text;
-        string customercombo = customer.transform.GetChild(1).GetComponent<CustomerScript>().saladCombo;
-
-        if (playerCombo != string.Empty)
+        if (gameOver == false)
         {
-            if (playerCombo == customercombo)
+            string playerCombo = player.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text;
+            string customercombo = customer.transform.GetChild(1).GetComponent<CustomerScript>().saladCombo;
+
+            if (playerCombo != string.Empty)
             {
-                player.GetComponent<Player>().UpdateScore(player.GetComponent<Player>().score + ScorePoints);
-                //ResetTheCombosOfPlayerAndCustomer(player, customer, true);
-            }
-            else
-            {
-                //ResetTheCombosOfPlayerAndCustomer(player, customer, false);
+                if (playerCombo == customercombo)
+                {
+                    int val = player.GetComponent<Player>().score + ScorePoints;
+                    //Debug.Log("The score is : " + val);
+                    player.GetComponent<Player>().UpdateScore(val);
+                    ResetTheCombosOfPlayerAndCustomer(player, customer, true);
+                }
+                else
+                {
+                    ResetTheCombosOfPlayerAndCustomer(player, customer, false);
+                }
             }
         }
     }
@@ -126,48 +139,63 @@ public class SaladChef_GameManager : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="customer"></param>
     /// <param name="status"></param>
-    //private void ResetTheCombosOfPlayerAndCustomer(GameObject player, GameObject customer, bool status)
-    //{
-    //    player.GetComponent<Player>().ResetTheCombo(status);
-    //    customer.transform.GetChild(1).GetComponent<CustomerScript>().ResetTheCombo(status);
-    //}
+    private void ResetTheCombosOfPlayerAndCustomer(GameObject player, GameObject customer, bool status)
+    {
+        //Debug.Log("the customer script is : " + CurrentCustomer.GetComponent<CustomerScript>().timeRanout);
+        if(customer.transform.GetChild(1).GetComponent<CustomerScript>().timeRanout > PercentageForCollectables/100)
+        {
+            //Debug.LogError(" ******** Here is ur bonus ******** ");
+            GameObject go = Instantiate(collectablesList[Random.Range(0, collectablesList.Count)]);
+            go.transform.SetParent(CanvasObject);
+            go.transform.localPosition = Vector3.zero;
+        }
+
+        player.GetComponent<Player>().ResetTheCombo(status);
+        customer.transform.GetChild(1).GetComponent<CustomerScript>().ResetTheCombo(status);        
+    }
 
     /// <summary>
     /// Countdown timer for both the players
     /// </summary>
     private void CountDownTimer()
     {
-        TimeLeft -= Time.deltaTime;
-        PlayerA_Timer.text = PlayerB_Timer.text = (TimeLeft).ToString("0");
+        //TimeLeft -= Time.deltaTime;
+        //PlayerA_Timer.text = PlayerB_Timer.text = (TimeLeft).ToString("0");
 
-        if (TimeLeft < 0)
-        {
-            gameOver = true;
-        }
+        //if(TimeLeft < 0)
+        //{
+        //    gameOver = true;            
+        //}
     }
 
     /// <summary>
     /// Check if the game has completed and show the results
     /// </summary>
-    //public void CheckIfGameOver()
-    //{
-    //    if (players[0].timeRanOut && players[1].timeRanOut)
-    //    {
-    //        gameOver = true;
-    //        KillCustomers();
-    //        EndScreen.SetActive(true);
-    //        if (players[0].score > players[1].score)
-    //        {
-    //            ResultText.text = players[0].name + " Wins \n score : " + players[0].score;
-    //            SaveTheHighScore(players[0].gameObject);
-    //        }
-    //        else
-    //        {
-    //            ResultText.text = players[1].name + " Wins \n score : " + players[1].score;
-    //            SaveTheHighScore(players[1].gameObject);
-    //        }
-    //    }
-    //}
+    public void CheckIfGameOver()
+    {  
+        if(players[0].timeRanOut && players[1].timeRanOut)
+        {
+            gameOver = true;
+            KillCustomers();
+            EndScreen.SetActive(true);
+
+            if(players[0].score > players[1].score)
+            {
+                ResultText.text = players[0].name + " Wins \n score : " + players[0].score;
+                SaveTheHighScore(players[0].gameObject);
+            }
+            else if (players[0].score < players[1].score)
+            {
+                ResultText.text = players[1].name + " Wins \n score : " + players[1].score;
+                SaveTheHighScore(players[1].gameObject);
+            }
+            else
+            {
+                ResultText.text = "No one won the match";
+                SaveTheHighScore(null);
+            }
+        }
+    }    
 
     /// <summary>
     /// Restart the game
@@ -181,34 +209,39 @@ public class SaladChef_GameManager : MonoBehaviour
     /// Save the scores 
     /// </summary>
     /// <param name="player"></param>
-    //private void SaveTheHighScore(GameObject player)
-    //{
-    //    Dictionary<string, object> dict_1 = new Dictionary<string, object>();
-    //    Highscore newhighscore = new Highscore();
+    private void SaveTheHighScore(GameObject player)
+    {
+        Debug.Log(" ****** Saving the high score ****** ");
 
-    //    highscoreList.Add(newhighscore);
+        if (player != null)
+        {
+            Dictionary<string, object> dict_1 = new Dictionary<string, object>();
+            Highscore newhighscore = new Highscore();
+            newhighscore.score = player.GetComponent<Player>().score;
+            highscoreList.Add(newhighscore);
 
-    //    Dictionary<string, object> dict_2 = new Dictionary<string, object>();
+            Dictionary<string, object> dict_2 = new Dictionary<string, object>();
 
-    //    for (int i = 0; i < highscoreList.Count; i++)
-    //    {
-    //        dict_2.Add(i.ToString(), highscoreList[i].score);
-    //    }
+            for (int i = 0; i < highscoreList.Count; i++)
+            {
+                dict_2.Add(i.ToString(), highscoreList[i].score);
+            }
 
-    //    dict_1.Add("highscores", dict_2);
-    //    string highscoreJson = Json.Serialize(dict_1);
+            dict_1.Add("highscores", dict_2);
+            string highscoreJson = Json.Serialize(dict_1);
 
-    //    string path = "Assets/Resources/savedata.txt";
+            string path = "Assets/Resources/savedata.txt";
 
-    //    if (!File.Exists(path))
-    //    {
-    //        File.WriteAllText(path, highscoreJson);
-    //    }
-    //    else
-    //    {
-    //        File.WriteAllText(path, highscoreJson);
-    //    }
-    //}
+            if (!File.Exists(path))
+            {
+                File.WriteAllText(path, highscoreJson);
+            }
+            else
+            {
+                File.WriteAllText(path, highscoreJson);
+            }
+        }
+    }
 
     /// <summary>
     /// Loading the highscore when the highscore button is pressed at the end screen
@@ -217,9 +250,9 @@ public class SaladChef_GameManager : MonoBehaviour
     public void LoadHighScoreOnGameEnd(bool status)
     {
         //Clearing the high score UI
-        if (ScrollRectContentParent.childCount > 0)
+        if(ScrollRectContentParent.childCount > 0)
         {
-            for (int i = 0; i < ScrollRectContentParent.childCount; i++)
+            for(int i = 0; i < ScrollRectContentParent.childCount; i++)
             {
                 Destroy(ScrollRectContentParent.GetChild(i).gameObject);
             }
@@ -263,55 +296,55 @@ public class SaladChef_GameManager : MonoBehaviour
             HighScoreUI.SetActive(status);
         }
     }
-
+    
     /// <summary>
     /// Loading the highscore on gamestart and saving them in a class for serializing them in json
     /// </summary>
-    //private void LoadTheHighScoresOnGameStart()
-    //{
-    //    string path = "Assets/Resources/savedata.txt";
+    private void LoadTheHighScoresOnGameStart()
+    {
+        string path = "Assets/Resources/savedata.txt";
 
-    //    if (File.Exists(path))
-    //    {
-    //        StreamReader reader = new StreamReader(path);
-    //        string highscore = reader.ReadToEnd();
-    //        reader.Close();
+        if (File.Exists(path))
+        {
+            StreamReader reader = new StreamReader(path);
+            string highscore = reader.ReadToEnd();
+            reader.Close();
 
-    //        var dict_1 = Json.Deserialize(highscore) as Dictionary<string, object>;
-    //        kvpList = dict_1.ToList();
+            var dict_1 = Json.Deserialize(highscore) as Dictionary<string, object>;
+            kvpList = dict_1.ToList();
 
-    //        foreach (KeyValuePair<string, object> kvp in kvpList)
-    //        {
-    //            Dictionary<string, object> dict_2 = new Dictionary<string, object>();
-    //            dict_2 = kvp.Value as Dictionary<string, object>;
+            foreach (KeyValuePair<string, object> kvp in kvpList)
+            {
+                Dictionary<string, object> dict_2 = new Dictionary<string, object>();
+                dict_2 = kvp.Value as Dictionary<string, object>;
 
-    //            var kvpDict_2 = dict_2.ToList();
+                var kvpDict_2 = dict_2.ToList();
 
-    //            foreach (KeyValuePair<string, object> kvp2 in kvpDict_2)
-    //            {
-    //                int h_score = (int.Parse)((kvp2.Value).ToString());
-    //                tempIntList.Add(h_score);
-    //            }
-    //        }
+                foreach (KeyValuePair<string, object> kvp2 in kvpDict_2)
+                {
+                    int h_score = (int.Parse)((kvp2.Value).ToString());                              
+                    tempIntList.Add(h_score);
+                }
+            }
 
-    //        SortingHighScore();
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("The given path is invalid");
-    //    }
-    //}
+            SortingHighScore();
+        }
+        else
+        {
+            Debug.Log("The given path is invalid");
+        }
+    }
 
     /// <summary>
     /// Sorting the highscores for display
     /// </summary>
     private void SortingHighScore()
     {
-        for (int i = 0; i < tempIntList.Count; i++)
+        for(int i = 0; i < tempIntList.Count; i++)
         {
-            for (int j = i + 1; j < tempIntList.Count; j++)
+            for(int j = i + 1; j < tempIntList.Count; j++)
             {
-                if (tempIntList[j] > tempIntList[i])
+                if(tempIntList[j] > tempIntList[i])
                 {
                     int tempscore = tempIntList[i];
                     tempIntList[i] = tempIntList[j];
@@ -320,7 +353,7 @@ public class SaladChef_GameManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < tempIntList.Count; i++)
+        for(int i = 0; i < tempIntList.Count; i++)
         {
             Highscore hscore = new Highscore();
             hscore.score = tempIntList[i];

@@ -923,6 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!114 &3127600732201465534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1255,6 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!222 &3127600732239379810
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1518,6 +1520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!222 &3127600732266809262
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1584,6 +1587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228358fb0af7064e9f7d247b64fe0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reserved: 0
 --- !u!222 &3127600732345274604
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4419,6 +4423,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884b420c7fe1a854c91dae7712b26e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 0
+  timeLeft: 20
+  speed: 2
+  timeRanOut: 0
+  hitWithCustomer: 0
+  horizontalInput: 
+  verticalInput: 
+  interactKey: 0
+  ScoreText: {fileID: 0}
+  TimeText: {fileID: 0}
+  UnchoppedVegetables_Text: {fileID: 0}
+  ChoppedVegetables_Text: {fileID: 0}
+  ChopTableVegetable_Text: {fileID: 0}
+  vegetableList: []
+  choppedVegetables: []
 --- !u!61 &3127600733014931507
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4686,6 +4705,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884b420c7fe1a854c91dae7712b26e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 0
+  timeLeft: 20
+  speed: 2
+  timeRanOut: 0
+  hitWithCustomer: 0
+  horizontalInput: 
+  verticalInput: 
+  interactKey: 0
+  ScoreText: {fileID: 0}
+  TimeText: {fileID: 0}
+  UnchoppedVegetables_Text: {fileID: 0}
+  ChoppedVegetables_Text: {fileID: 0}
+  ChopTableVegetable_Text: {fileID: 0}
+  vegetableList: []
+  choppedVegetables: []
 --- !u!61 &3127600733028629061
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5479,6 +5513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!222 &3127600733189390360
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6237,6 +6272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228358fb0af7064e9f7d247b64fe0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reserved: 0
 --- !u!222 &3127600733349559228
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6960,6 +6996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228358fb0af7064e9f7d247b64fe0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reserved: 0
 --- !u!222 &3127600733526765930
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7101,6 +7138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!114 &3127600733529953460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7459,6 +7497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228358fb0af7064e9f7d247b64fe0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reserved: 0
 --- !u!222 &3127600733631467014
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7701,6 +7740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228358fb0af7064e9f7d247b64fe0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reserved: 0
 --- !u!114 &3127600733672526450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7913,6 +7953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00504c95d1bdf749bf83b5c79dea7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VegetableName: 
 --- !u!222 &3127600733811803146
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8867,3 +8908,120 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Score
+--- !u!1 &4974445590295320128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4974445590295320129}
+  - component: {fileID: 4974445590295320130}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4974445590295320129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974445590295320128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 533.4448, y: 543.22485, z: -0.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4974445590295320130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974445590295320128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc7526b5b0619c46b2a0fb2eb514ad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScorePoints: 5
+  TimeLeft: 50
+  BonusTime: 5
+  gameOver: 0
+  PlayerA_Timer: {fileID: 0}
+  PlayerB_Timer: {fileID: 0}
+  ResultText: {fileID: 0}
+  EndScreen: {fileID: 0}
+  HighScoreUI: {fileID: 0}
+  ScoreUI: {fileID: 4503115952053191765, guid: 04609aeb70b6e7143ba45007b208b14b, type: 3}
+  CustomerTable: {fileID: 0}
+  ScrollRectContentParent: {fileID: 0}
+  VegetableList:
+  - A
+  - B
+  - C
+  - D
+  - E
+  - F
+  SeatPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  tempTransList: []
+  tempIntList: 
+  highscoreList: []
+--- !u!4 &9215720674976897970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9215720674976897972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 516.04846, y: 834, z: 0.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9215720674976897971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9215720674976897972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a5a1e8b4ec77cf4e9011417679d846f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialPosition: {fileID: 0}
+  customerPrefab: {fileID: 7488474936315318562, guid: 0e4b630a2a6ef5c40b01c7656d2f2ae4,
+    type: 3}
+--- !u!1 &9215720674976897972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9215720674976897970}
+  - component: {fileID: 9215720674976897971}
+  m_Layer: 0
+  m_Name: CustomerSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1

@@ -10,5 +10,5 @@ public class VegetablePlate : MonoBehaviour
     private void Awake()
     {
         VegetableName = transform.GetChild(0).GetComponent<Text>().text;
-    }
+    }    
 }
