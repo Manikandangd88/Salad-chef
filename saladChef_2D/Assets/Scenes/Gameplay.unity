@@ -581,7 +581,7 @@ PrefabInstance:
     - target: {fileID: 2467116921024287513, guid: 9ab1522f4af0ef54b9e8fa54dee53ed4,
         type: 3}
       propertyPath: TimeLeft
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2467116921024287513, guid: 9ab1522f4af0ef54b9e8fa54dee53ed4,
         type: 3}
@@ -679,6 +679,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364460869978950323, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364460869094877743, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5364460870088765436, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
         type: 3}
@@ -785,6 +795,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5364460869966879723, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5364460870765670572, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -800,16 +815,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1913715970}
-    - target: {fileID: 5364460869094877743, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
-        type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5364460869978950323, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
-        type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 5364460869980139964, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
         type: 3}
       propertyPath: m_Layer
@@ -1149,6 +1154,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.x
       value: 118.861404
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364460869787585637, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364460870954207317, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364460869966879721, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6eaa5d6dc1a006a4a81a91f97eea6e7d, type: 3}
